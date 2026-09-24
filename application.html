@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maya Philippines — Sample Application</title>
+  <style>
+    :root { --blue:#0b57d0; --orange:#ff7a00; --ink:#172033; --muted:#667085; }
+    * { box-sizing:border-box; } body { margin:0; min-height:100vh; padding:24px; font-family:Inter,system-ui,sans-serif; background:#f5f7fb; color:var(--ink); }
+    .card { width:min(100%,560px); margin:auto; background:#fff; border-radius:24px; padding:32px; box-shadow:0 18px 50px #173b731c; }
+    .brand { text-align:center; font-size:28px; font-weight:800; margin-bottom:22px; } .blue{color:var(--blue)} .orange{color:var(--orange)}
+    h1 { margin:0 0 8px; text-align:center; } .sub { margin:0 0 24px; color:var(--muted); text-align:center; }
+    label { display:block; margin:18px 0 8px; font-weight:700; } input, select, textarea { width:100%; padding:13px; border:1px solid #d6dce8; border-radius:10px; font:inherit; } textarea{min-height:100px;resize:vertical}
+    button { width:100%; margin-top:24px; padding:15px; border:0; border-radius:999px; color:#fff; background:linear-gradient(90deg,var(--blue),#7c3aed); font-size:17px; font-weight:800; cursor:pointer; }
+    .back { display:inline-block; color:var(--blue); text-decoration:none; font-weight:700; margin-bottom:20px; } .notice { margin-top:18px; color:var(--muted); font-size:12px; line-height:1.5; text-align:center; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <a class="back" href="index.html">← Back to calculator</a>
+    <div class="brand"><span class="blue">Maya</span> <span class="orange">Philippines</span></div>
+    <h1>Sample loan application</h1>
+    <p class="sub">Complete this front-end demo form. It does not submit data to Maya or any lender.</p>
+    <form id="loanForm">
+      <label for="type">Loan type</label>
+      <select id="type" required><option>Personal Loan</option><option>Salary Loan</option><option>Business Loan</option><option>Emergency Loan</option></select>
+      <label for="amount">Loan amount (PHP)</label>
+      <input id="amount" type="number" min="1000" max="500000" required />
+      <label for="term">Loan term</label>
+      <select id="term" required><option>6 months</option><option>12 months</option><option>18 months</option><option>24 months</option><option>36 months</option><option>60 months</option></select>
+      <label for="purpose">Purpose of loan</label>
+      <textarea id="purpose" placeholder="Example: education expenses" required></textarea>
+      <button type="submit">Save sample application</button>
+    </form>
+    <p class="notice">Demo only. Do not enter real identity details, passwords, PINs, or one-time passwords.</p>
+  </main>
+  <script>
+    const savedAmount = localStorage.getItem('loanAmount');
+    const savedTerm = localStorage.getItem('loanTerm');
+    if (savedAmount) document.querySelector('#amount').value = savedAmount;
+    if (savedTerm) document.querySelector('#term').value = `${savedTerm} months`;
+    document.querySelector('#loanForm').addEventListener('submit', event => {
+      event.preventDefault();
+      localStorage.setItem('loanType', document.querySelector('#type').value);
+      localStorage.setItem('loanAmount', document.querySelector('#amount').value);
+      localStorage.setItem('loanTerm', document.querySelector('#term').value);
+      localStorage.setItem('loanPurpose', document.querySelector('#purpose').value);
+      alert('Sample application saved locally in this browser.');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maya Philippines — Loan Sample</title>
+  <style>
+    :root { --blue:#0b57d0; --orange:#ff7a00; --ink:#172033; --muted:#667085; --bg:#eef4ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; font-family:Inter,system-ui,sans-serif; color:var(--ink); background:linear-gradient(135deg,var(--bg),#fff); }
+    .card { width:min(100%,520px); background:#fff; border-radius:24px; padding:32px; box-shadow:0 18px 50px #173b731c; }
+    .brand { text-align:center; font-size:30px; font-weight:800; letter-spacing:-1px; margin-bottom:8px; }
+    .blue { color:var(--blue); } .orange { color:var(--orange); }
+    h1 { text-align:center; margin:18px 0 8px; font-size:28px; } .sub { text-align:center; color:var(--muted); margin:0 0 28px; }
+    .panel { padding:22px; border-radius:18px; background:#f4f8ff; }
+    .row { display:flex; justify-content:space-between; gap:16px; font-weight:700; margin-bottom:10px; }
+    label { display:block; margin:22px 0 8px; font-weight:700; }
+    input[type=range] { width:100%; accent-color:var(--blue); }
+    select, input[type=number] { width:100%; padding:13px; border:1px solid #d6dce8; border-radius:10px; font-size:16px; }
+    .payment { margin-top:22px; padding:18px; border-radius:14px; background:#eaf2ff; text-align:center; }
+    .payment small { display:block; color:var(--muted); } .payment strong { display:block; margin-top:6px; color:var(--blue); font-size:30px; }
+    button { width:100%; margin-top:24px; padding:15px; border:0; border-radius:999px; color:#fff; background:linear-gradient(90deg,var(--blue),#7c3aed); font-size:17px; font-weight:800; cursor:pointer; }
+    .notice { margin-top:18px; color:var(--muted); font-size:12px; line-height:1.5; text-align:center; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span class="blue">Maya</span> <span class="orange">Philippines</span></div>
+    <h1>Flexible loan sample</h1>
+    <p class="sub">Explore an illustrative loan estimate and application flow.</p>
+    <section class="panel">
+      <div class="row"><span>Loan amount</span><span id="amountLabel">₱50,000</span></div>
+      <input id="amount" type="range" min="1000" max="500000" step="1000" value="50000" />
+      <div class="row" style="font-size:12px;color:var(--muted);"><span>₱1,000</span><span>₱500,000</span></div>
+      <div class="row"><span>Loan term</span><span id="termLabel">12 months</span></div>
+      <input id="term" type="range" min="6" max="60" step="6" value="12" />
+      <div class="row" style="font-size:12px;color:var(--muted);"><span>6 months</span><span>60 months</span></div>
+      <div class="payment"><small>Illustrative monthly payment</small><strong id="payment">₱4,396.03</strong></div>
+    </section>
+    <button id="apply">Start sample application</button>
+    <p class="notice">Demo only. This is not an official Maya product, offer, approval, or application portal. No personal credentials or OTPs are collected.</p>
+  </main>
+  <script>
+    const amount = document.querySelector('#amount'), term = document.querySelector('#term');
+    const peso = value => '₱' + Number(value).toLocaleString('en-PH', {maximumFractionDigits: 2});
+    function update() {
+      const principal = Number(amount.value), months = Number(term.value), monthlyRate = 0.10 / 12;
+      const factor = Math.pow(1 + monthlyRate, months);
+      const monthly = principal * (monthlyRate * factor) / (factor - 1);
+      document.querySelector('#amountLabel').textContent = peso(principal);
+      document.querySelector('#termLabel').textContent = `${months} months`;
+      document.querySelector('#payment').textContent = peso(monthly);
+    }
+    amount.addEventListener('input', update); term.addEventListener('input', update); update();
+    document.querySelector('#apply').addEventListener('click', () => {
+      localStorage.setItem('loanAmount', amount.value); localStorage.setItem('loanTerm', term.value);
+      location.href = 'application.html';
+    });
+  </script>
+</body>
+</html>
